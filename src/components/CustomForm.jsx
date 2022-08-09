@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { addItem } from '../store/features/storageSlice';
+import { addItem, updateItem } from '../store/features/storageSlice';
 
 export default function CustomForm(props) {
   const dispatch = useDispatch();
@@ -61,6 +61,19 @@ export default function CustomForm(props) {
     resetForm();
   };
 
+  const handleUpdateInput = () => {
+    dispatch(
+      updateItem({
+        name,
+        id: props.updateItem.id,
+        price,
+        quantity,
+      })
+    );
+    props.handleClose();
+    resetForm();
+  };
+
   const isFormValidated = () => {
     return name !== '' && price !== '' && quantity !== '';
   };
@@ -104,14 +117,26 @@ export default function CustomForm(props) {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          disabled={!isFormValidated()}
-          onClick={handleSubmitInput}
-          variant='primary'
-          type='submit'
-        >
-          Submit
-        </Button>
+        {isUpdate ? (
+          <Button
+            disabled={!isFormValidated()}
+            onClick={handleUpdateInput}
+            variant='primary'
+            type='submit'
+          >
+            Update
+          </Button>
+        ) : (
+          <Button
+            disabled={!isFormValidated()}
+            onClick={handleSubmitInput}
+            variant='primary'
+            type='submit'
+          >
+            Submit
+          </Button>
+        )}
+
         <Button variant='secondary' onClick={props.handleClose}>
           Close
         </Button>

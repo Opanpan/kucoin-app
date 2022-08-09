@@ -23,15 +23,16 @@ export const storageSlice = createSlice({
       state.items.splice(index, 1);
     },
     updateItem: (state, data) => {
-      let index = data.payload.id;
-      state.items.splice(index, 1, data.payload)
+      let index = data.payload.id - 1;
+      state.items.splice(index, 1, data.payload);
     },
     setUpdate: (state, data) => {
       state.isUpdate = data.payload;
-    }
+    },
   },
 });
 
-export const { addItem, deleteItem, updateItem, setUpdate } = storageSlice.actions;
+export const { addItem, deleteItem, updateItem, setUpdate } =
+  storageSlice.actions;
 
 export default storageSlice.reducer;
