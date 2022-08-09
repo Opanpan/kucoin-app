@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   items: [],
   totalCreatedItem: 0,
+  isUpdate: false,
 };
 
 export const storageSlice = createSlice({
@@ -21,9 +22,16 @@ export const storageSlice = createSlice({
       );
       state.items.splice(index, 1);
     },
+    updateItem: (state, data) => {
+      let index = data.payload.id;
+      state.items.splice(index, 1, data.payload)
+    },
+    setUpdate: (state, data) => {
+      state.isUpdate = data.payload;
+    }
   },
 });
 
-export const { addItem, deleteItem } = storageSlice.actions;
+export const { addItem, deleteItem, updateItem, setUpdate } = storageSlice.actions;
 
 export default storageSlice.reducer;

@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
-import CustomForm from '../components/CustomForm.jsx';
 import CustomTable from '../components/CustomTable.jsx';
+import { useDispatch } from 'react-redux';
+import { setUpdate } from '../store/features/storageSlice';
+
+
 
 export default function Home() {
   const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    dispatch(setUpdate(false));
+  };
   const handleShow = () => setShow(true);
+  const handleShowUpdate = () => {
+    setShow(true);
+  };
 
   return (
     <Row>
-      <Row>
-        <Col>
-          <CustomForm show={show} handleClose={handleClose} />
-        </Col>
-      </Row>
 
       <Row className='mb-5'>
         <Col>
@@ -25,7 +30,7 @@ export default function Home() {
 
       <Row>
         <Col>
-          <CustomTable />
+          <CustomTable show={show} handleShow={handleShow} handleClose={handleClose} handleShowUpdate={handleShowUpdate}/>
         </Col>
       </Row>
     </Row>

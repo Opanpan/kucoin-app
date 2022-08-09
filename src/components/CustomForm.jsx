@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../store/features/storageSlice';
 
 export default function CustomForm(props) {
@@ -9,6 +9,26 @@ export default function CustomForm(props) {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
+
+  const isUpdate = useSelector((state) => state.storage.isUpdate);
+
+  useEffect(() => {
+    handleDetailItem();
+  }, [isUpdate]);
+
+  const handleDetailItem = () => {
+    if (props.updateItem !== null) {
+      if (isUpdate) {
+        setName(props.updateItem.name);
+        setPrice(props.updateItem.price);
+        setQuantity(props.updateItem.quantity);
+      } else {
+        setName('');
+        setPrice('');
+        setQuantity('');
+      }
+    }
+  };
 
   const handleInputName = (e) => {
     setName(e.target.value);
@@ -26,15 +46,15 @@ export default function CustomForm(props) {
     setName('');
     setPrice('');
     setQuantity('');
-  }
+  };
 
   const handleSubmitInput = () => {
     dispatch(
       addItem({
         name,
         id: 0,
-        price: Number(price),
-        quantity: Number(quantity),
+        price,
+        quantity,
       })
     );
     props.handleClose();
@@ -56,6 +76,7 @@ export default function CustomForm(props) {
             <Form.Label>Product Name</Form.Label>
             <Form.Control
               onChange={handleInputName}
+              value={name}
               type='text'
               placeholder='Enter name'
             />
@@ -65,6 +86,7 @@ export default function CustomForm(props) {
             <Form.Label>Price</Form.Label>
             <Form.Control
               onChange={handleInputPrice}
+              value={price}
               type='number'
               placeholder='Enter price'
             />
@@ -74,6 +96,7 @@ export default function CustomForm(props) {
             <Form.Label>Quantity</Form.Label>
             <Form.Control
               onChange={handleInputQuantity}
+              value={quantity}
               type='number'
               placeholder='Enter quantity'
             />
